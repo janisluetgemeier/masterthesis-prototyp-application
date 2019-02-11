@@ -32,8 +32,7 @@ public class LoginController {
         //Check for id:
         Benutzer zielBenutzer = benutzerRepository.findByEmail(benutzer.getEmail());
 
-
-        if(zielBenutzer.getId() == null || zielBenutzer == null) {
+        if(zielBenutzer == null || zielBenutzer.getId() == null) {
             throw new IllegalArgumentException();
         }
 
