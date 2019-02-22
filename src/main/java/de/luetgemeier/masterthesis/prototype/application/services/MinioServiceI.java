@@ -3,7 +3,6 @@ package de.luetgemeier.masterthesis.prototype.application.services;
 import io.minio.MinioClient;
 import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.internal.metadata.core.AnnotationProcessingOptionsImpl;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -21,7 +20,7 @@ import java.security.NoSuchAlgorithmException;
 @Service
 @Profile("minio")
 @Slf4j
-public class MinioService implements FileStorageService, InitializingBean {
+public class MinioServiceI implements IFileStorageService, InitializingBean {
 
     @Value( "${de.luetgemeier.masterthesis.prototype.application.storage.minio.url}" )
     private String url;

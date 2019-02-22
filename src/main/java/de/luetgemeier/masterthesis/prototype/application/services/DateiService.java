@@ -17,13 +17,14 @@ import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.Date;
 
 @Service
 @Configuration
 public class DateiService {
 
     @Autowired
-    private FileStorageService fileStorageService;
+    private IFileStorageService IFileStorageService;
 
     @Autowired
     private DateiRepository dateiRepository;
@@ -32,16 +33,16 @@ public class DateiService {
 
         String storedFilename = benutzer.getId() + "-" + file.getOriginalFilename();
 
-        fileStorageService.uploadFile(storedFilename, file);
+        IFileStorageService.uploadFile(storedFilename, file);
 
-        Datei datei = Datei.builder().originalfilename(file.getOriginalFilename()).userid(benutzer.getId()).storedfilename(storedFilename).build();
+        Datei datei = Datei.builder().originalfilename(file.getOriginalFilename()).userid(benutzer.getId()).storedfilename(storedFilename).createddate(new Date()).build();
         dateiRepository.save(datei);
         return datei;
     }
 
     public InputStreamResource getFile(String storedFilename) throws IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, InvalidArgumentException, ErrorResponseException, NoResponseException, InvalidBucketNameException, InsufficientDataException, InternalException {
 
-        InputStream is = fileStorageService.getFile(storedFilename);
+        InputStream is = IFileStorageService.getFile(storedFilename);
 
         InputStreamResource isr = new InputStreamResource(is);
 
@@ -49,7 +50,7 @@ public class DateiService {
     }
 
     public void deleteFile(String storedFileName) throws IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, InvalidArgumentException, ErrorResponseException, NoResponseException, InvalidBucketNameException, InsufficientDataException, InternalException {
-        fileStorageService.deleteFile(storedFileName);
+        IFileStorageService.deleteFile(storedFileName);
     }
 
     @Bean(initMethod="start",destroyMethod="stop")
